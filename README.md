@@ -4,12 +4,15 @@ Bu çalışmada endüstriyel pompalardaki veriler kullanılarak bir LSTM modeli 
 3. **TensorFlow**, verileri LSTM modeline besler ve tahminleri Kafka'ya geri gönderir.
 
 producer.logs
+
 !['producer_logs'](./images/producer.png)
 
 
 spark_streaming.logs:
+
 !['spark_streaming_logs'](./images/spark_streaming.png)
 
 
 model geliştirme aşamasından görüntü main.ipynb:
+
 !['model'](./images/model.png)
