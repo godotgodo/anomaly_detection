@@ -16,9 +16,21 @@ sensor_data_stream = spark \
     .option("subscribe", "sensor_data_topic") \
     .load()
 
-sensor_data_stream = sensor_data_stream.selectExpr("CAST(value AS STRING)")
+from pyspark.sql.functions import from_json, col
+from pyspark.sql.types import StructType, StructField, StringType, FloatType
 
-sensor_data_stream = sensor_data_stream.selectExpr("json_tuple(value, 'timestamp', 'sensor_04', 'sensor_06', 'sensor_07', 'sensor_08', 'sensor_09') AS (timestamp, sensor_04, sensor_06, sensor_07, sensor_08, sensor_09)")
+schema = StructType([
+    StructField("timestamp", StringType(), True),
+    StructField("sensor_04", FloatType(), True),
+    StructField("sensor_06", FloatType(), True),
+    StructField("sensor_07", FloatType(), True),
+    StructField("sensor_08", FloatType(), True),
+    StructField("sensor_09", FloatType(), True)
+])
+
+sensor_data_stream = sensor_data_stream.withColumn("value", from_json(col("value"), schema))
+sensor_data_stream = sensor_data_stream.selectExpr("value.*")
+
 
 model = tf.keras.models.load_model('lstm_model.h5')
 

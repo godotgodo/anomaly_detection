@@ -34,7 +34,6 @@ def generate_sensor_data():
 
 def send_to_kafka(topic, data):
     producer.send(topic, data)
-    producer.flush()
 
 def produce_data():
     while True:
